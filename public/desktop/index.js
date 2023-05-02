@@ -11,6 +11,8 @@ var id = 0;
 var crashId = " ";
 var lastCrashId = " ";
 let counter = 3;
+var timer = 0;
+var timerText = document.getElementById("timer");
 
 let scene, camera, renderer, simplex, plane, geometry, xZoom, yZoom, noiseStrength;
 let skateboard, rock, rockMesh;
@@ -187,6 +189,8 @@ function setTimer() {
 		// Decrement the time remaining
 		timeRemaining--;
     const socket = io();
+
+	timerText.innerText = "Time Remaining:" + Math.floor(timeRemaining);
 
 		// If the time has run out, reload the web page
 		if (timeRemaining < 0) {
