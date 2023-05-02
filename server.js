@@ -11,6 +11,10 @@ io.on('connection', function(socket){
       io.emit('start')
     })
 
+    socket.on('disconnected', function(){
+      io.emit('disconnected')
+    })
+
     socket.on('orientation', function(e){
       io.emit('mobile orientation', e);
     })

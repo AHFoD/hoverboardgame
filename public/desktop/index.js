@@ -177,7 +177,7 @@ function draw() {
 
 function setTimer() {
 	// Set the timer duration in seconds
-	const duration = 10;
+	const duration = 63;
 
 	// Set the initial time remaining
 	let timeRemaining = duration;
@@ -186,11 +186,14 @@ function setTimer() {
 	const countdown = setInterval(() => {
 		// Decrement the time remaining
 		timeRemaining--;
+    const socket = io();
 
 		// If the time has run out, reload the web page
 		if (timeRemaining < 0) {
 			clearInterval(countdown);
-			location.reload();
+			alert('Your session has ended.')
+			socket.emit('disconnected');
+			history.go(0)
 		}
 	}, 1000);
 }

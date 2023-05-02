@@ -5,8 +5,7 @@ window.onload = function(){
     const socket = io();
     const button = document.getElementsByTagName('button')[0];
   
-    if(isMobile()){   
-
+    if(isMobile()){        
         function handleOrientation(e){
             if(ready){
                 socket.emit('orientation', e.gamma);
@@ -14,27 +13,18 @@ window.onload = function(){
         }
 
         window.addEventListener("deviceorientation", handleOrientation, true);
-        button.addEventListener('click', getAccel, false);
+        button.addEventListener('click', enableNoSleep, false);
 
-        function getAccel(){
-            if(/iPad|iPhone|iPod/.test(navigator.userAgent)){
-                // alert('ini ipong')
-                DeviceMotionEvent.requestPermission().then(response => {
-                    if (response == 'granted') {
-                        console.log("accelerometer permission granted");
-                        enableNoSleep();
-                    }
-                });
-            } else {
-                enableNoSleep()
-            }
-            
-        }
         function enableNoSleep() {
             socket.emit('mobile connected');
             socket.on('start', () => ready = true)
             noSleep.enable();
             button.removeEventListener('touchstart', enableNoSleep, false);
+
+            socket.on('disconnected', () => {
+                alert('Your session has ended.')
+                history.go(0)
+            })
         }
     }
 }
