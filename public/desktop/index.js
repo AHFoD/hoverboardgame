@@ -175,6 +175,26 @@ function draw() {
 	renderer.render(scene, camera);
 }
 
+function setTimer() {
+	// Set the timer duration in seconds
+	const duration = 10;
+
+	// Set the initial time remaining
+	let timeRemaining = duration;
+
+	// Start the countdown
+	const countdown = setInterval(() => {
+		// Decrement the time remaining
+		timeRemaining--;
+
+		// If the time has run out, reload the web page
+		if (timeRemaining < 0) {
+			clearInterval(countdown);
+			location.reload();
+		}
+	}, 1000);
+}
+
 function adjustVertices(offset) {
   for (let i = 0; i < plane.geometry.vertices.length; i++) {
     let vertex = plane.geometry.vertices[i];
@@ -296,11 +316,11 @@ function displayCounter(){
 let interval;
 
 window.onload = () => {
+	const socket = io();
+
 	if(!isMobile()){
 		let previousValue;
 		const connectButton = document.getElementById('connect');
-	
-		const socket = io();
 	 
 		socket.on('mobile orientation', function(e){
 			if(!bluetoothConnected){
@@ -323,6 +343,10 @@ window.onload = () => {
 			previousValue = e
 		})
 	}
+
+	socket.on('start', function(){
+		setTimer()
+	})
 }
 
 const isMobile = () => {
